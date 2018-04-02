@@ -27,6 +27,8 @@ app.use(express.static('public'));
 //variables
 app.set('port', 8081);
 app.set('db', 'mongodb://admin:admin@ds231549.mlab.com:31549/redsocial');
+app.set('clave','abcdefg'); 
+app.set('crypto',crypto);
 
 //Rutas controladores por logica
 require("./routes/rusers.js")(app, swig, gestorBD)//(app, param 1, param2)
