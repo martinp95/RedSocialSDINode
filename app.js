@@ -20,21 +20,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 var gestorBD = require("./modules/gestorBD.js");
 gestorBD.init(app,mongo);
 
-//Crear el control de acceso por enrutador
+// routerUsuarioSession
+var routerUsuarioSession = express.Router();
+routerUsuarioSession.use(function(req, res, next) {
+	console.log("routerUsuarioSession");
+	if ( req.session.usuario ) {
+			next(); 
+		} else {
+			console.log("va a : "+req.session.destino) 
+			res.redirect("/identificarse"); 
+		} 
+	});
+
+// Aplicar los router
 
 app.use(express.static('public'));
 
-//variables
+// variables
 app.set('port', 8081);
 app.set('db', 'mongodb://admin:admin@ds231549.mlab.com:31549/redsocial');
 app.set('clave','abcdefg'); 
 app.set('crypto',crypto);
 
-//Rutas controladores por logica
-require("./routes/rusers.js")(app, swig, gestorBD)//(app, param 1, param2)
+// Rutas controladores por logica
+require("./routes/rusers.js")(app, swig, gestorBD)// (app, param 1, param2)
 
+app.use(function(err,req,res,next){
+	console.log("Error producido: " + err);
+	if (! res.headersSent) {
+		res.status(400); 
+		res.send("Recurso no disponible");
+	}
+});
 
-//lanzar el servidor
+// lanzar el servidor
 app.listen(app.get('port'), function() {
 console.log("Servidor activo");
 });
