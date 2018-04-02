@@ -2,7 +2,7 @@
   "name": "RedSocialSDINode",
   "version": "0.1.0",
   "description": "RedSocialSDINode",
-  "main": "hello-world-server.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified! Configure in package.json\" && exit 1"
   },
@@ -14,5 +14,8 @@
   ],
   "author": "",
   "license": "MIT",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "express": "^4.16.1"
+  }
 }
