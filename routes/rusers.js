@@ -5,17 +5,14 @@ module.exports = function(app, swig, gestorBD) {
 		res.send(respuesta);
 	});
 
-	app.post('/usuario', function(req, res) {
+	app.post('/registrarse', function(req, res) {
 		// Comprobar que las contraseñas coinciden
 		if (req.body.password == req.body.repetedPassword) {
 
-			// comprobar si ya esta en el sistema
 			var criterio = {
 				email : req.body.email
 			}
-
 			gestorBD.obtenerUsuarios(criterio, function(usuarios) {
-				// El usuario no existe, lo creo.
 				if (usuarios == null || usuarios.length == 0) {
 
 					var seguro = app.get("crypto").createHmac('sha256',
@@ -36,11 +33,15 @@ module.exports = function(app, swig, gestorBD) {
 						}
 					});
 				} else {
-					res.send('Error el usuario ya existe');
+					res.redirect("/registrarse"
+							+ "?mensaje=El usuario ya existe."
+							+ "&tipoMensaje=alert-danger ");
 				}
 			});
 		} else {
-			res.send("Error, las constraseñas no coinciden.");
+			res.redirect("/registrarse"
+					+ "?mensaje=Las constraseñas no coinciden."
+					+ "&tipoMensaje=alert-danger ");
 		}
 	});
 
@@ -59,7 +60,9 @@ module.exports = function(app, swig, gestorBD) {
 		gestorBD.obtenerUsuarios(criterio, function(usuarios) {
 			if (usuarios == null || usuarios.length == 0) {
 				req.session.usuario = null;
-				res.send("No identificado: ");
+				res.redirect("/identificarse"
+						+ "?mensaje=Email o password incorrecto"
+						+ "&tipoMensaje=alert-danger ");
 			} else {
 				req.session.usuario = usuarios[0].email;
 				res.send("identificado");
