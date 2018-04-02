@@ -25,7 +25,9 @@ module.exports = function(app, swig, gestorBD) {
 					}
 					gestorBD.insertarUsuario(usuario, function(id) {
 						if (id == null) {
-							res.send("Error al insertar ");
+							res.redirect("/registrarse"
+									+ "?mensaje=Error al crear el usuario."
+									+ "&tipoMensaje=alert-danger ");
 						} else {
 							// meterlo en sesion se va a llevar a la vista de
 							// todos los usuarios de la aplicacion.
