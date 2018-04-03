@@ -80,9 +80,26 @@ module.exports = function(app, swig, gestorBD) {
 	});
 
 	app.get('/listUsers', function(req, res) {
-		var criterio = {
-			email : {
-				$ne : req.session.usuario
+		var criterio = {};
+
+		if (req.query.busqueda != null) {
+			criterio = {
+				$or : [ {
+					"email" : {
+						$regex : ".*" + req.query.busqueda + ".*"
+					}
+				}, {
+					"name" : {
+						$regex : ".*" + req.query.busqueda + ".*"
+					}
+				} ]
+			}
+			// contenga eso.
+		} else {
+			criterio = {
+				email : {
+					$ne : req.session.usuario
+				}
 			}
 		}
 
