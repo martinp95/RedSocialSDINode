@@ -83,14 +83,28 @@ module.exports = function(app, swig, gestorBD) {
 		var criterio = {
 				email : {$ne : req.session.usuario} 
 		}
-		gestorBD.obtenerUsuarios(criterio, function(usuarios){
+		
+		var pg = parseInt(req.query.pg);
+		if(req.query.pg == null){
+			pg=1;
+		}
+		
+		gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios, total){
 			if(usuarios == null){
 				//en el futuro borrar ya que puede haber solo un usuario y la lista deberia de estar vacia
 				res.send("Error al insertar");
 			}else{
+				
+				var pgUltima = total/5;
+				if(total % 5 > 0){
+					pgUltima = pgUltima +1;
+				}
+				
 				var respuesta = swig.renderFile('views/blistaUsers.html',
 				{
-					usuarios : usuarios
+					usuarios : usuarios,
+					pgActual : pg,
+					pgUltima : pgUltima
 				});
 				res.send(respuesta);
 			}
