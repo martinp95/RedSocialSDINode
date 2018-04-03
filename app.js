@@ -54,7 +54,13 @@ app.use(function(err,req,res,next){
 	}
 });
 
+app.get('/', function(req, res){
+	var respuesta = swig.renderFile('views/bindex.html', {});
+	res.send(respuesta);
+});
+
 // lanzar el servidor
 app.listen(app.get('port'), function() {
 console.log("Servidor activo");
 });
+
