@@ -5,7 +5,7 @@ module.exports = function(app, swig, gestorBD) {
 		res.send(respuesta);
 	});
 
-	app.post('/registrarse', function(req, res) {
+	app.post("/registrarse", function(req, res) {
 		// Comprobar que las contraseñas coinciden
 		if (req.body.password == req.body.repetedPassword) {
 
@@ -21,7 +21,8 @@ module.exports = function(app, swig, gestorBD) {
 
 					var usuario = {
 						email : req.body.email,
-						password : seguro
+						password : seguro,
+						name : req.body.name
 					}
 					gestorBD.insertarUsuario(usuario, function(id) {
 						if (id == null) {
@@ -67,9 +68,8 @@ module.exports = function(app, swig, gestorBD) {
 						+ "&tipoMensaje=alert-danger ");
 			} else {
 				req.session.usuario = usuarios[0].email;
-				res.send("identificado");
-				// falta redirigir a la vista que lista los usuarios de la
-				// aplicacion.
+				//res.send("identificado");
+				res.redirect("/listUsers");
 			}
 		});
 	});
@@ -77,6 +77,24 @@ module.exports = function(app, swig, gestorBD) {
 	app.get('/desconectarse', function(req, res) {
 		req.session.usuario = null;
 		res.redirect("/identificarse");
+	});
+
+	app.get('/listUsers', function(req, res) {
+		var criterio = {
+				email : {$ne : req.session.usuario} 
+		}
+		gestorBD.obtenerUsuarios(criterio, function(usuarios){
+			if(usuarios == null){
+				//en el futuro borrar ya que puede haber solo un usuario y la lista deberia de estar vacia
+				res.send("Error al insertar");
+			}else{
+				var respuesta = swig.renderFile('views/blistaUsers.html',
+				{
+					usuarios : usuarios
+				});
+				res.send(respuesta);
+			}
+		});
 	});
 
 };
