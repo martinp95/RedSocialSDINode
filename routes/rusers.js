@@ -84,17 +84,22 @@ module.exports = function(app, swig, gestorBD) {
 
 		if (req.query.busqueda != null) {
 			criterio = {
-				$or : [ {
+				$and : [ {
 					"email" : {
-						$regex : ".*" + req.query.busqueda + ".*"
+						$ne : req.session.usuario
 					}
 				}, {
-					"name" : {
-						$regex : ".*" + req.query.busqueda + ".*"
-					}
+					$or : [ {
+						"email" : {
+							$regex : ".*" + req.query.busqueda + ".*"
+						}
+					}, {
+						"name" : {
+							$regex : ".*" + req.query.busqueda + ".*"
+						}
+					} ]
 				} ]
 			}
-			// contenga eso.
 		} else {
 			criterio = {
 				email : {
