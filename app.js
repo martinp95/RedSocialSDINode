@@ -27,12 +27,13 @@ routerUsuarioSession.use(function(req, res, next) {
 	if ( req.session.usuario ) {
 			next(); 
 		} else {
-			console.log("va a : "+req.session.destino) 
+			console.log("va a : " + req.session.destino) 
 			res.redirect("/identificarse"); 
 		} 
 	});
 
-// Aplicar los router
+// Aplicar router UserSession
+app.use("/listUsers", routerUsuarioSession);
 
 app.use(express.static('public'));
 

@@ -68,7 +68,7 @@ module.exports = function(app, swig, gestorBD) {
 						+ "&tipoMensaje=alert-danger ");
 			} else {
 				req.session.usuario = usuarios[0].email;
-				//res.send("identificado");
+				// res.send("identificado");
 				res.redirect("/listUsers");
 			}
 		});
@@ -81,27 +81,29 @@ module.exports = function(app, swig, gestorBD) {
 
 	app.get('/listUsers', function(req, res) {
 		var criterio = {
-				email : {$ne : req.session.usuario} 
+			email : {
+				$ne : req.session.usuario
+			}
 		}
-		
+
 		var pg = parseInt(req.query.pg);
-		if(req.query.pg == null){
-			pg=1;
+		if (req.query.pg == null) {
+			pg = 1;
 		}
-		
-		gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios, total){
-			if(usuarios == null){
-				//en el futuro borrar ya que puede haber solo un usuario y la lista deberia de estar vacia
+
+		gestorBD.obtenerUsuariosPg(criterio, pg, function(usuarios, total) {
+			if (usuarios == null) {
+				// en el futuro borrar ya que puede haber solo un usuario y la
+				// lista deberia de estar vacia
 				res.send("Error al insertar");
-			}else{
-				
-				var pgUltima = total/5;
-				if(total % 5 > 0){
-					pgUltima = pgUltima +1;
+			} else {
+
+				var pgUltima = total / 5;
+				if (total % 5 > 0) {
+					pgUltima = pgUltima + 1;
 				}
-				
-				var respuesta = swig.renderFile('views/blistaUsers.html',
-				{
+
+				var respuesta = swig.renderFile('views/blistaUsers.html', {
 					usuarios : usuarios,
 					pgActual : pg,
 					pgUltima : pgUltima
