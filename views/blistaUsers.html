@@ -31,11 +31,12 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for usuarios in usuarios %}
+			{% for usuario in usuarios %}
 			<tr>
-				<td>{{ usuarios.name }}</td>
-				<td>{{ usuarios.email }}</td>
-				<td><a class="btn btn-primary pull-right" href="/">Agregar
+				<td>{{ usuario.name }}</td>
+				<td>{{ usuario.email }}</td>
+				<td><a class="btn btn-primary pull-right"
+					href="/peticionAmistad/{{ usuario._id.toString() }}">Agregar
 						amigos</a> <br></td>
 			</tr>
 			{% endfor %}

@@ -6,7 +6,6 @@ module.exports = function(app, swig, gestorBD) {
 	});
 
 	app.post("/registrarse", function(req, res) {
-		// Comprobar que las contraseñas coinciden
 		if (req.body.password == req.body.repetedPassword) {
 
 			var criterio = {
@@ -30,11 +29,8 @@ module.exports = function(app, swig, gestorBD) {
 									+ "?mensaje=Error al crear el usuario."
 									+ "&tipoMensaje=alert-danger ");
 						} else {
-							// meterlo en sesion se va a llevar a la vista de
-							// todos los usuarios de la aplicacion.
 							req.session.usuario = req.body.email;
 							res.redirect("/listUsers");
-							//res.send('Usuario Insertado ' + id);
 						}
 					});
 				} else {
@@ -70,7 +66,6 @@ module.exports = function(app, swig, gestorBD) {
 						+ "&tipoMensaje=alert-danger ");
 			} else {
 				req.session.usuario = usuarios[0].email;
-				// res.send("identificado");
 				res.redirect("/listUsers");
 			}
 		});

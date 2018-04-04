@@ -5,6 +5,23 @@ module.exports = {
 		this.mongo = mongo;
 		this.app = app;
 	},
+	insertarPeticionAmistad : function(peticionAmistad, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('peticionesAmistad');
+				collection.insert(peticionAmistad, function(err, result) {
+					if (err) {
+						funcionCallback(null);
+					} else {
+						funcionCallback(result.ops[0]._id);
+					}
+					db.close();
+				});
+			}
+		});
+	},
 	obtenerUsuariosPg : function(criterio, pg, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
