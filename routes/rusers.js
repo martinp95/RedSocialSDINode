@@ -32,7 +32,9 @@ module.exports = function(app, swig, gestorBD) {
 						} else {
 							// meterlo en sesion se va a llevar a la vista de
 							// todos los usuarios de la aplicacion.
-							res.send('Usuario Insertado ' + id);
+							req.session.usuario = req.body.email;
+							res.redirect("/listUsers");
+							//res.send('Usuario Insertado ' + id);
 						}
 					});
 				} else {
