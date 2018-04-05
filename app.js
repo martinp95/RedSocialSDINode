@@ -34,6 +34,7 @@ routerUsuarioSession.use(function(req, res, next) {
 
 // Aplicar router UserSession
 app.use("/listUsers", routerUsuarioSession);
+app.use("/peticionAmistad/listar", routerUsuarioSession);
 
 app.use(express.static('public'));
 

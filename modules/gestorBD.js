@@ -22,6 +22,23 @@ module.exports = {
 			}
 		});
 	},
+	obtenerPeticionesAmistad : function(peticion, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('peticionesAmistad');
+				collection.find(peticion).toArray(function(err, peticionesAmistad) {
+							if (err) {
+								funcionCallback(null);
+							} else {
+								funcionCallback(peticionesAmistad);
+							}
+							db.close();
+						});
+			}
+		});
+	},
 	obtenerUsuariosPg : function(criterio, pg, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
