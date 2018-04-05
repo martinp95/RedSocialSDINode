@@ -41,7 +41,7 @@ module.exports = function(app, swig, gestorBD) {
 								peticiones) {
 							gestorBD.eliminarPeticionAmistad(peticionBA,
 									function(peticiones) {
-										res.send("Amistad creada: " + id)
+								res.redirect("/peticionAmistad/listar");
 									});
 						});
 

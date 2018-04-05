@@ -73,7 +73,7 @@ module.exports = function(app, swig, gestorBD) {
 					if (id == null) {
 						res.send("Error al insertar la peticion");
 					} else {
-						res.send("Peticion enviada con exito: " + id);
+						res.redirect("/listUsers");
 					}
 				});
 			}
