@@ -5,6 +5,40 @@ module.exports = {
 		this.mongo = mongo;
 		this.app = app;
 	},
+	eliminarPeticionAmistad : function(criterio, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('peticionesAmistad');
+				collection.remove(criterio, function(err, result) {
+					if (err) {
+						funcionCallback(null);
+					} else {
+						funcionCallback(result);
+					}
+					db.close();
+				});
+			}
+		});
+	},
+	insertarAmistad : function(amistad, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('amistad');
+				collection.insert(amistad, function(err, result) {
+					if (err) {
+						funcionCallback(null);
+					} else {
+						funcionCallback(result.ops[0]._id);
+					}
+					db.close();
+				});
+			}
+		});
+	},
 	insertarPeticionAmistad : function(peticionAmistad, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
@@ -28,7 +62,8 @@ module.exports = {
 				funcionCallback(null);
 			} else {
 				var collection = db.collection('peticionesAmistad');
-				collection.find(peticion).toArray(function(err, peticionesAmistad) {
+				collection.find(peticion).toArray(
+						function(err, peticionesAmistad) {
 							if (err) {
 								funcionCallback(null);
 							} else {

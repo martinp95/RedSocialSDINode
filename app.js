@@ -47,6 +47,7 @@ app.set('crypto',crypto);
 // Rutas controladores por logica
 require("./routes/rusers.js")(app, swig, gestorBD)// (app, param 1, param2)
 require("./routes/rpeticionAmistad.js")(app, swig, gestorBD)
+require("./routes/ramistad.js")(app, swig, gestorBD)
 
 app.use(function(err,req,res,next){
 	console.log("Error producido: " + err);
