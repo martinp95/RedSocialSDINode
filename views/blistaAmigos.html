@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block titulo %} Lista Amigos {% endblock %}
+{% block contenido_principal %}
+<h2>Lista Amigos</h2>
+
+<div class="table-responsive">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Email</th>
+				<th class="col-md-1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for usuario in usuarios %}
+			<tr>
+				<td>{{ usuario.name }}</td>
+				<td>{{ usuario.email }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+<div class="row text-center">
+	<ul class="pagination">
+		<!-- Primera -->
+		<li class="page-item"><a class="page-link"
+			href="/amistad/listar?pg=1">Primera</a></li>
+		<!-- Anterior (si la hay ) -->
+		{% if pgActual-1 >= 1 %}
+		<li class="page-item"><a class="page-link"
+			href="/amistad/listar?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {%
+		endif %}
+		<!-- Actual -->
+		<li class="page-item active"><a class="page-link"
+			href="/amistad/listar?pg={{ pgActual }}">{{ pgActual }}</a></li>
+		<!-- Siguiente (si la hay) -->
+		{% if pgActual+1 <= pgUltima %}
+		<li class="page-item"><a class="page-link"
+			href="/amistad/listar?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {%
+		endif %}
+		<!-- Última -->
+		<li class="page-item"><a class="page-link"
+			href="/amistad/listar?pg={{ pgUltima }}">Última</a></li>
+	</ul>
+</div>
+
+{% endblock %}

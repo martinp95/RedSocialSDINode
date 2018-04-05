@@ -56,6 +56,23 @@ module.exports = {
 			}
 		});
 	},
+	obtenerAmistad : function(criterio, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('amistad');
+				collection.find(criterio).toArray(function(err, amistad) {
+					if (err) {
+						funcionCallback(null);
+					} else {
+						funcionCallback(amistad);
+					}
+					db.close();
+				});
+			}
+		});
+	},
 	obtenerPeticionesAmistad : function(peticion, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
