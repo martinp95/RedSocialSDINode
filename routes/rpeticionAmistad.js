@@ -5,7 +5,6 @@ module.exports = function(app, swig, gestorBD) {
 		var criterio = {
 			email : req.session.usuario
 		};
-		// sacar el id del usuario en sesion a traves de su correo.
 		gestorBD.obtenerUsuarios(criterio, function(usuarios) {
 			if (usuarios == null || usuarios.length == 0) {
 				res.send("Error al listar las peticiones de amistad");
@@ -13,7 +12,7 @@ module.exports = function(app, swig, gestorBD) {
 				var peticion = {
 					_idReceiver : gestorBD.mongo.ObjectID(usuarios[0]._id)
 				}
-				// Coger las peticiones en las que el reciver sea ese id
+
 				gestorBD.obtenerPeticionesAmistad(peticion, function(
 						peticionesAmistad) {
 
@@ -68,12 +67,33 @@ module.exports = function(app, swig, gestorBD) {
 					_idReceiver : gestorBD.mongo
 							.ObjectID(req.params.idReceiver)
 				};
-
-				gestorBD.insertarPeticionAmistad(peticionAmistad, function(id) {
-					if (id == null) {
-						res.send("Error al insertar la peticion");
-					} else {
-						res.redirect("/listUsers");
+				gestorBD.obtenerPeticionesAmistad(peticionAmistad, function(
+						peticionesAmistad) {
+					if( peticionesAmistad.length != 0){
+						res.redirect("/listUsers"
+								+ "?mensaje=Error, peticion ya enviada."
+								+ "&tipoMensaje=alert-danger ");
+					}else{
+						var relacionAmistad = {
+								user1 : gestorBD.mongo.ObjectID(usuarios[0]._id),
+								user2 : gestorBD.mongo
+										.ObjectID(req.params.idReceiver)
+							};
+						gestorBD.obtenerAmistad(relacionAmistad, function(amistad){
+							if(amistad.length != 0){
+								res.redirect("/listUsers"
+										+ "?mensaje=Error, los usuarios ya son amigos."
+										+ "&tipoMensaje=alert-danger ");
+							}else{
+								gestorBD.insertarPeticionAmistad(peticionAmistad, function(id) {
+									if (id == null) {
+										res.send("Error al insertar la peticion");
+									} else {
+										res.redirect("/listUsers");
+									}
+								});
+							}
+						});
 					}
 				});
 			}
