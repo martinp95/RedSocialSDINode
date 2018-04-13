@@ -1,5 +1,5 @@
 # RedSocialSDINode
 
 #Autores
-	-Gema
+	-Gemma González Gil
 	-Martín Peláez Díaz

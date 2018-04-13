@@ -89,7 +89,9 @@ module.exports = function(app, swig, gestorBD) {
 									if (id == null) {
 										res.send("Error al insertar la peticion");
 									} else {
-										res.redirect("/listUsers");
+										res.redirect("/listUsers"
+												+ "?mensaje=Se ha enviado la petición de amistad"
+												+ "&tipoMensaje=confirm ");
 									}
 								});
 							}

@@ -8,7 +8,8 @@
 		<form method="get" action="/listUsers">
 			<div
 				class="input-group col-xs-8 col-sm-6 col-md-4 col-lg-5 pull-right">
-				<input type="text" class="search-query form-control"
+				<input id="searchUsers" type="text"
+					class="search-query form-control"
 					placeholder="Nombre o email del usuario" name="busqueda" /> <span
 					class="input-group-btn">
 					<button class="btn" type="submit">
@@ -35,9 +36,10 @@
 			<tr>
 				<td>{{ usuario.name }}</td>
 				<td>{{ usuario.email }}</td>
-				<td><a class="btn btn-primary pull-right"
+				<td><a id="botonAgregarAmigo{{ usuario.email }}"
+					class="btn btn-primary pull-right"
 					href="/peticionAmistad/{{ usuario._id.toString() }}">Agregar
-						amigos</a> <br></td>
+						amigo</a> <br></td>
 			</tr>
 			{% endfor %}
 		</tbody>
