@@ -2,6 +2,11 @@
 var express = require('express');
 var app = express();
 
+var log4js = require('log4js');
+var logger = log4js.getLogger();
+logger.level = "all";
+//app.set('log', logger);
+
 var expressSession = require('express-session');
 app.use(expressSession({
 	secret: 'abcdefg',
@@ -46,7 +51,7 @@ app.set('clave','abcdefg');
 app.set('crypto',crypto);
 
 // Rutas controladores por logica
-require("./routes/rusers.js")(app, swig, gestorBD)// (app, param 1, param2)
+require("./routes/rusers.js")(app, swig, gestorBD, logger)// (app, param 1, param2)
 require("./routes/rpeticionAmistad.js")(app, swig, gestorBD)
 require("./routes/ramistad.js")(app, swig, gestorBD)
 
