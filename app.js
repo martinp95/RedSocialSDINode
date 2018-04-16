@@ -2,10 +2,13 @@
 var express = require('express');
 var app = express();
 
+var jwt = require('jsonwebtoken');
+app.set('jwt', jwt);
+
 var log4js = require('log4js');
 log4js.configure({
-    appenders: { cheese: { type: 'file', filename: 'miLogger.log' } },
-    categories: { default: { appenders: ['cheese'], level: 'error' } }
+    appenders: {cheese: {type: 'file', filename: 'miLogger.log'}},
+    categories: {default: {appenders: ['cheese'], level: 'error'}}
 });
 var logger = log4js.getLogger();
 logger.level = "all";
@@ -13,9 +16,9 @@ logger.level = "all";
 
 var expressSession = require('express-session');
 app.use(expressSession({
-	secret: 'abcdefg',
-	resave: true,
-	saveUninitialized: true 
+    secret: 'abcdefg',
+    resave: true,
+    saveUninitialized: true
 }));
 var crypto = require('crypto');
 var fileUpload = require('express-fileupload');
@@ -24,22 +27,57 @@ var mongo = require('mongodb');
 var swig = require('swig');
 var bodyParser = require('express');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 
 var gestorBD = require("./modules/gestorBD.js");
-gestorBD.init(app,mongo);
+gestorBD.init(app, mongo);
+
+// routerUsuarioToken
+var routerUsuarioToken = express.Router();
+routerUsuarioToken.use(function (req, res, next) {
+    // obtener el token, puede ser un parámetro GET , POST o HEADER
+    var token = req.body.token || req.query.token || req.headers['token'];
+    if (token != null) {
+        // verificar el token
+        jwt.verify(token, 'secreto', function (err, infoToken) {
+            if (err || (Date.now() / 1000 - infoToken.tiempo) > 240) {
+                res.status(403); // Forbidden
+                res.json({
+                    acceso: false,
+                    error: 'Token invalido o caducado'
+                });
+                // También podríamos comprobar que intoToken.usuario existe
+                return;
+
+            } else {
+                // dejamos correr la petición
+                res.usuario = infoToken.usuario;
+                next();
+            }
+        });
+
+    } else {
+        res.status(403); // Forbidden
+        res.json({
+            acceso: false,
+            mensaje: 'No hay Token'
+        });
+    }
+});
+// Aplicar routerUsuarioToken
+app.use('/api/user', routerUsuarioToken);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
-routerUsuarioSession.use(function(req, res, next) {
-	console.log("routerUsuarioSession");
-	if ( req.session.usuario ) {
-			next(); 
-		} else {
-			console.log("va a : " + req.session.destino) 
-			res.redirect("/identificarse"); 
-		} 
-	});
+routerUsuarioSession.use(function (req, res, next) {
+    console.log("routerUsuarioSession");
+    if (req.session.usuario) {
+        next();
+    } else {
+        console.log("va a : " + req.session.destino)
+        res.redirect("/identificarse");
+    }
+});
 
 // Aplicar router UserSession
 app.use("/listUsers", routerUsuarioSession);
@@ -51,29 +89,30 @@ app.use(express.static('public'));
 // variables
 app.set('port', 8081);
 app.set('db', 'mongodb://admin:admin@ds231549.mlab.com:31549/redsocial');
-app.set('clave','abcdefg'); 
-app.set('crypto',crypto);
+app.set('clave', 'abcdefg');
+app.set('crypto', crypto);
 
 // Rutas controladores por logica
 require("./routes/rusers.js")(app, swig, gestorBD, logger)// (app, param 1, param2)
 require("./routes/rpeticionAmistad.js")(app, swig, gestorBD)
 require("./routes/ramistad.js")(app, swig, gestorBD)
+require("./routes/rapiusers.js")(app, gestorBD);
 
-app.use(function(err,req,res,next){
-	console.log("Error producido: " + err);
-	if (! res.headersSent) {
-		res.status(400); 
-		res.send("Recurso no disponible");
-	}
+app.use(function (err, req, res, next) {
+    console.log("Error producido: " + err);
+    if (!res.headersSent) {
+        res.status(400);
+        res.send("Recurso no disponible");
+    }
 });
 
-app.get('/', function(req, res){
-	var respuesta = swig.renderFile('views/bindex.html', {});
-	res.send(respuesta);
+app.get('/', function (req, res) {
+    var respuesta = swig.renderFile('views/bindex.html', {});
+    res.send(respuesta);
 });
 
 // lanzar el servidor
-app.listen(app.get('port'), function() {
-console.log("Servidor activo");
+app.listen(app.get('port'), function () {
+    console.log("Servidor activo");
 });
 
