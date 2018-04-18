@@ -107,7 +107,7 @@ module.exports = {
             }
         });
     },
-    obtenerPeticionesAmistad : function(peticion, funcionCallback) {
+	obtenerPeticionesAmistad : function(peticion, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
 				funcionCallback(null);

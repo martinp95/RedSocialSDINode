@@ -1,4 +1,33 @@
 module.exports = function (app, gestorBD) {
+	
+	app.get('/api/mensajes/:id', function(req, res){
+		var token = req.body.token || req.query.token || req.headers['token'];
+		var identificado = {
+				email : app.get('jwt').decode(token, 'secreto').usuario
+		};
+		gestorBD.obtenerUsuarios(identificado, function (usuarios) {
+			 if (usuarios == null || usuarios.length == 0) {
+	             res.status(500);
+	             res.json({
+	              error: "No se puede acceder a los mensajes"
+	             })
+			 }else{
+				 var criterio = {
+						 $or : [{
+							 emisor : gestorBD.mongo.ObjectID(usuarios[0]._id),
+							 destino : gestorBD.mongo.ObjectID(req.params.id)
+						 },{
+							 destino : gestorBD.mongo.ObjectID(usuarios[0]._id),
+							 emisor : gestorBD.mongo.ObjectID(req.params.id)
+						 }]
+				 };
+				 gestorBD.obtenerMensajes(criterio, function(mensajes){
+					 res.status(200);
+					 res.send(JSON.stringify(mensajes));
+				 });
+			 }
+		});
+	});
 
     app.post('/api/mensajes', function (req, res) {
         var token = req.body.token || req.query.token || req.headers['token'];
@@ -64,37 +93,6 @@ module.exports = function (app, gestorBD) {
                 });
             }
         });
-    });
-
-    app.get('api/mensajes/:id', function (req, res) {
-        var token = req.body.token || req.query.token || req.headers['token']
-        var identificado = {
-            email: app.get('jwt').decode(token, 'secreto').usuario
-        };
-
-        gestorBD.obtenerUsuarios(identificado, function (usuarios) {
-            if (usuarios == null || usuarios.length == 0) {
-                res.status(500);
-                res.json({
-                    error: "No se puede acceder a los mensajes"
-                })
-            } else {
-                var criterio = {
-                    $or: [{
-                        emisor: gestorBD.mongo.ObjectID(usuarios[0]._id),
-                        destino: gestorBD.mongo.ObjectID(req.params.id)
-                    }, {
-                        destino: gestorBD.mongo.ObjectID(usuarios[0]._id),
-                        emisor: gestorBD.mongo.ObjectID(req.params.id)
-                    }]
-                };
-                gestorBD.obtenerMensajes(criterio, function (mensajes) {
-                    res.status(200);
-                    res.send(JSON.stringify(mensajes));
-                });
-            }
-        });
-
     });
 
 }

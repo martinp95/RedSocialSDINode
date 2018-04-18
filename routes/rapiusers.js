@@ -7,7 +7,6 @@ module.exports = function (app, gestorBD) {
             email: req.body.email,
             password: seguro
         }
-
         gestorBD.obtenerUsuarios(criterio, function (usuarios) {
             if (usuarios == null || usuarios.length == 0) {
                 res.status(401); // Unauthorized
