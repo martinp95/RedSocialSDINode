@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- <script src="/js/cookie.js"></script> -->
+    <script src="/js/cookie.js"></script>
 </head>
 <body>
 
@@ -45,6 +45,26 @@
 
     function widgetAmigos(){
         $( "#contenedor-principal" ).load( "widget-amigos.html");
+    }
+
+    if ( Cookies.get('token') != null ){
+        token = Cookies.get('token');
+        var url = new URL(window.location.href);
+        var w = url.searchParams.get("w");
+        switch(w){
+            case "login":
+                $( "#contenedor-principal" ).load("widget-login.html");
+                break;
+            case "amigos":
+                $( "#contenedor-principal" ).load("widget-amigos.html");
+                break;
+            case "chat":
+                $( "#contenedor-principal" ).load("widget-chat.html");
+                break;
+            default:
+                $( "#contenedor-principal" ).load( "widget-amigos.html");
+        }
+
     }
 </script>
 

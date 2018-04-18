@@ -1,0 +1,89 @@
+<div id="widget-chat">
+    <button class="btn" onclick="cargarMensajes()">Actualizar</button>
+    <h2>Chat</h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>De</th>
+            <th>Para</th>
+            <th>Texto</th>
+            <th>Leido</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody id="tablaCuerpo">
+
+        </tbody>
+    </table>
+
+    <div class="form-group">
+        <div class="col-sm-10">
+            <input type="text" class="form-control" name="agregar-texto"
+                   placeholder="Texto del mensaje" id="agregar-texto"/>
+    </div>
+        <button type="button" class="btn btn-primary" id="boton-agregar"
+                onclick="agregarMensaje()">Enviar
+        </button>
+    </div>
+</div>
+
+<script>
+    window.history.pushState("", "", "/cliente.html?w=chat");
+
+    var mensajes;
+
+    function cargarMensajes() {
+        $.ajax({
+            url: URLbase + "/listaMensajes",
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (respuesta) {
+                usuarios = respuesta;
+                actualizarTabla(mensajes);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    function actualizarTabla(mensajesMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        for (i = 0; i < mensajesMostrar.length; i++) {
+            $("#tablaCuerpo").append(
+                "<tr id=" + mensajesMostrar[i]._id + ">" +
+                "<td>" + mensajesMostrar[i].emisor + "</a>" + "</td>" +
+                "<td>" + mensajesMostrar[i].destino + "</td>" +
+                "<td>" + mensajesMostrar[i].texto + "</td>" +
+                "<td>" + mensajesMostrar[i].leido + "</td>" +
+                "<td>" +
+                "</td>" +
+                "</tr>");
+        }
+    }
+
+    function agregarMensaje() {
+        $.ajax({
+            url: URLbase + "/mensajes",
+            type: "POST",
+            data: {
+                destino: idAmigoSeleccionado,
+                texto: $("#agregar-texto").val()
+            },
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (respuesta) {
+                console.log(respuesta); // <-- Prueba
+                $("#contenedor-principal").load("widget-chat.html");
+
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    //cargarMensajes();
+</script>

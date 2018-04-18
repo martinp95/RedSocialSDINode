@@ -21,6 +21,8 @@
 </div>
 
 <script>
+    window.history.pushState("", "", "/cliente.html?w=login");
+
     $("#boton-login").click(function () {
         $.ajax({
             url: URLbase + "/autenticar",
@@ -33,6 +35,7 @@
             success: function (respuesta) {
                 console.log(respuesta.token); // <- Prueba
                 token = respuesta.token;
+                Cookies.set('token', respuesta.token);
                 $("#contenedor-principal").load("widget-amigos.html");
             },
             error: function (error) {
