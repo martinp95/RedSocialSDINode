@@ -65,7 +65,8 @@ routerUsuarioToken.use(function (req, res, next) {
     }
 });
 // Aplicar routerUsuarioToken
-app.use('/api/user', routerUsuarioToken);
+app.use('/api/amigos', routerUsuarioToken);
+app.use('/api/mensajes', routerUsuarioToken);
 
 // routerUsuarioSession
 var routerUsuarioSession = express.Router();
@@ -96,7 +97,9 @@ app.set('crypto', crypto);
 require("./routes/rusers.js")(app, swig, gestorBD, logger)// (app, param 1, param2)
 require("./routes/rpeticionAmistad.js")(app, swig, gestorBD)
 require("./routes/ramistad.js")(app, swig, gestorBD)
-require("./routes/rapiusers.js")(app, swig, gestorBD);
+require("./routes/rapiusers.js")(app, gestorBD);
+require("./routes/rapiamistad.js")(app, gestorBD);
+require("./routes/rapimensajes.js")(app, gestorBD);
 
 app.use(function (err, req, res, next) {
     console.log("Error producido: " + err);
