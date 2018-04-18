@@ -1,5 +1,9 @@
 module.exports = function (app, gestorBD) {
+<<<<<<< HEAD
     app.post("/api/autenticar", function (req, res) {
+=======
+    app.post("/api/autenticar/", function (req, res) {
+>>>>>>> branch 'master' of https://github.com/martinp95/RedSocialSDINode.git
         var seguro = app.get("crypto").createHmac('sha256', app.get('clave'))
             .update(req.body.password).digest('hex');
         var criterio = {
