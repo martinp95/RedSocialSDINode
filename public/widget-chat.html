@@ -34,7 +34,7 @@
 
     function cargarMensajes() {
         $.ajax({
-            url: URLbase + "/listaMensajes",
+            url: URLbase + "/mensajes/" + idAmigoSeleccionado,
             type: "GET",
             data: {},
             dataType: 'json',
@@ -85,5 +85,5 @@
         });
     }
 
-    //cargarMensajes();
+    cargarMensajes();
 </script>
