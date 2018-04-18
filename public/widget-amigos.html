@@ -1,0 +1,52 @@
+<div id="widget-amigos">
+    <button class="btn" onclick="cargarAmigos()">Actualizar</button>
+    <h2>Lista Amigos</h2>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th class="col-md-1"></th>
+        </tr>
+        </thead>
+        <tbody id="tablaCuerpo">
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var usuarios;
+
+    function cargarAmigos() {
+        $.ajax({
+            url: URLbase + "/amigos",
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (respuesta) {
+                usuarios = respuesta;
+                actualizarTabla(usuarios);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
+    function actualizarTabla(amigosMostrar) {
+        $("#tablaCuerpo").empty(); // Vaciar la tabla
+        for (i = 0; i < amigosMostrar.length; i++) {
+            $("#tablaCuerpo").append(
+                "<tr id=" + amigosMostrar[i]._id + ">" +
+                "<td>" + amigosMostrar[i].name + "</td>" +
+                "<td>" + amigosMostrar[i].email + "</td>" +
+                "<td>" +
+                "</td>" +
+                "</tr>");
+        }
+    }
+
+    cargarAmigos();
+</script>

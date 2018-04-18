@@ -2,6 +2,16 @@
 var express = require('express');
 var app = express();
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "POST, GET, DELETE, UPDATE, PUT");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
+    // Debemos especificar todas las headers que se aceptan. Content-Type , token
+    next();
+});
+
+
 var jwt = require('jsonwebtoken');
 app.set('jwt', jwt);
 
@@ -96,7 +106,7 @@ app.set('crypto', crypto);
 require("./routes/rusers.js")(app, swig, gestorBD, logger)// (app, param 1, param2)
 require("./routes/rpeticionAmistad.js")(app, swig, gestorBD)
 require("./routes/ramistad.js")(app, swig, gestorBD)
-require("./routes/rapiusers.js")(app, swig, gestorBD);
+require("./routes/rapiusers.js")(app, gestorBD);
 
 app.use(function (err, req, res, next) {
     console.log("Error producido: " + err);
