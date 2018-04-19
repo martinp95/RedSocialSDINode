@@ -1,5 +1,26 @@
 module.exports = function (app, gestorBD) {
 	
+	app.put('/api/mensajes/:id', function(req, res){
+		var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+		var mensaje = {
+				leido : true
+		}
+		gestorBD.modificarMensaje(criterio, mensaje,function(result){
+			if(result == null){
+				res.status(500);
+                res.json({
+                    error: "se ha producido un error"
+                })
+			}else{
+				res.status(200);
+                res.json({
+                    mensaje: "mensaje leido",
+                    _id: req.params.id
+                })
+			}
+		});
+	});
+	
 	app.get('/api/mensajes/:id', function(req, res){
 		var token = req.body.token || req.query.token || req.headers['token'];
 		var identificado = {
