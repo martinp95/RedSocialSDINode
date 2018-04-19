@@ -14,11 +14,11 @@ module.exports = function (app, gestorBD) {
 			 }else{
 				 var criterio = {
 						 $or : [{
-							 emisor : gestorBD.mongo.ObjectID(usuarios[0]._id),
-							 destino : gestorBD.mongo.ObjectID(req.params.id)
+							 "emisor._id" : gestorBD.mongo.ObjectID(usuarios[0]._id),
+							 "destino._id" : gestorBD.mongo.ObjectID(req.params.id)
 						 },{
-							 destino : gestorBD.mongo.ObjectID(usuarios[0]._id),
-							 emisor : gestorBD.mongo.ObjectID(req.params.id)
+							 "destino._id" : gestorBD.mongo.ObjectID(usuarios[0]._id),
+							 "emisor._id" : gestorBD.mongo.ObjectID(req.params.id)
 						 }]
 				 };
 				 gestorBD.obtenerMensajes(criterio, function(mensajes){
