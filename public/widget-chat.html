@@ -54,8 +54,8 @@
         for (i = 0; i < mensajesMostrar.length; i++) {
             $("#tablaCuerpo").append(
                 "<tr id=" + mensajesMostrar[i]._id + ">" +
-                "<td>" + mensajesMostrar[i].emisor + "</a>" + "</td>" +
-                "<td>" + mensajesMostrar[i].destino + "</td>" +
+                "<td>" + mensajesMostrar[i].emisor.name + "</a>" + "</td>" +
+                "<td>" + mensajesMostrar[i].destino.name + "</td>" +
                 "<td>" + mensajesMostrar[i].texto + "</td>" +
                 "<td>" + mensajesMostrar[i].leido + "</td>" +
                 "<td>" +

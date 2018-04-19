@@ -68,8 +68,8 @@ module.exports = function (app, gestorBD) {
                             } else {
                                 //crear el comentario con las ids de los dos usuarios y los demas datos
                                 var mensaje = {
-                                    emisor: gestorBD.mongo.ObjectID(usuarios[0]._id),
-                                    destino: gestorBD.mongo.ObjectID(usuarioAmigo[0]._id),
+                                    emisor: usuarios[0],
+                                    destino: usuarioAmigo[0],
                                     texto: req.body.texto,
                                     leido: false
                                 };
