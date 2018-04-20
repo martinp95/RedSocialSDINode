@@ -1,10 +1,13 @@
 module.exports = function (app, gestorBD) {
 	
 	app.put('/api/mensajes/:id', function(req, res){
-		var criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+		var criterio = {
+				"_id": gestorBD.mongo.ObjectID(req.params.id)
+		};
+		
 		var mensaje = {
 				leido : true
-		}
+		};
 		gestorBD.modificarMensaje(criterio, mensaje,function(result){
 			if(result == null){
 				res.status(500);
