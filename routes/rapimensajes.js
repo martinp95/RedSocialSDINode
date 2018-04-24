@@ -40,6 +40,7 @@ module.exports = function (app, gestorBD) {
 					}
 				});
             }
+		});
 	});
 	
 	app.get('/api/mensajes/:id', function(req, res){
