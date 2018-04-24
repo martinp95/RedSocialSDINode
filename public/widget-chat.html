@@ -41,9 +41,6 @@
             headers: {"token": token},
             success: function (respuesta) {
                 mensajes = respuesta;
-                for(i = 0; i < mensajes.length; i++){
-                    marcarLeido(mensajes[i]._id.toString());
-                }
                 actualizarTabla(mensajes);
             },
             error: function (error) {
@@ -61,7 +58,6 @@
             headers: {"token": token},
             success: function (respuesta) {
                 mensajes = respuesta;
-               // actualizarTabla(mensajes);
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
@@ -72,6 +68,7 @@
     function actualizarTabla(mensajesMostrar) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < mensajesMostrar.length; i++) {
+            marcarLeido(mensajesMostrar[i]._id.toString());
             $("#tablaCuerpo").append(
                 "<tr id=" + mensajesMostrar[i]._id + ">" +
                 "<td>" + mensajesMostrar[i].emisor.name + "</a>" + "</td>" +
