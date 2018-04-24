@@ -83,7 +83,7 @@ module.exports = function (app, swig, gestorBD, logger) {
     });
 
     app.get('/borrarBD', function (req, res) {
-        gestorBD.borrarBaseDeDatos(function () {
+        gestorBD.borrarBaseDeDatos(function (borrada) {
             res.send("Base de datos borrada");
         });
     });

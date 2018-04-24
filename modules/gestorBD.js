@@ -201,11 +201,26 @@ module.exports = {
             if (err) {
                 funcionCallback(null);
             } else {
-                db.collection('amistad').drop();
-                db.collection('mensajes').drop();
-                db.collection('peticionesAmistad').drop();
-                funcionCallback();
-                db.close();
+                db.collection('peticionesAmistad').drop(function (err, result) {
+                    if (err) {
+                        funcionCallback(null);
+                    } else {
+                        db.collection('amistad').drop(function (err, result) {
+                            if (err) {
+                                funcionCallback(null);
+                            } else {
+                                db.collection('mensajes').drop(function (err, result) {
+                                    if (err) {
+                                        funcionCallback(null);
+                                    } else {
+                                        funcionCallback(result);
+                                    }
+                                    db.close();
+                                });
+                            }
+                        });
+                    }
+                });
             }
         });
     }

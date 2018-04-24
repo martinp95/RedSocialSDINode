@@ -51,6 +51,7 @@ public class RedSocialSDITests {
 	// Antes de la primera prueba
 	@BeforeClass
 	static public void begin() {
+		driver.navigate().to("http://localhost:8081/borrarBD");
 	} // Al finalizar la Ãºltima prueba
 
 	@AfterClass
@@ -161,7 +162,8 @@ public class RedSocialSDITests {
 		elementos.get(0).click();
 		PO_LoginView.fillForm(driver, "gemma@example.com", "1234");
 
-		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigogema@gmail.com", PO_View.getTimeout());
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigogema@gmail.com",
+				PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
 
@@ -287,4 +289,181 @@ public class RedSocialSDITests {
 		PO_View.checkElement(driver, "text", "Gemma");
 	}
 
+	// C1.1 Inicio de sesión con datos válidos
+	@Test
+	public void CInVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		PO_View.checkElement(driver, "text", "Nombre");
+	}
+
+	// C1.2 Inicio de sesión con datos inválidos (usuario no existente en la
+	// aplicación)
+	@Test
+	public void CInInVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemm@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		PO_View.checkElement(driver, "text", "Usuario no encontrado");
+	}
+
+	// C2.1 Acceder a la lista de amigos de un usuario, que al menos tenga tres
+	// amigos
+	@Test
+	public void CListAmiVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		SeleniumUtils.esperarSegundos(driver, 5);
+		
+		PO_View.checkElement(driver, "text", "Nacho");
+	}
+
+	// C2.2 Acceder a la lista de amigos de un usuario, y realizar un filtrado para
+	// encontrar a un amigo concreto, el nombre a buscar debe coindicir con el de un
+	// amigo
+	@Test
+	public void CListAmiFil() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		WebElement filtro = driver.findElement(By.id("filtro-nombre"));
+		filtro.click();
+		filtro.clear();
+		filtro.sendKeys("Nacho");
+
+		SeleniumUtils.textoNoPresentePagina(driver, "Raul");
+		PO_View.checkElement(driver, "text", "Nacho");
+	}
+
+	// C3.1 Acceder a la lista de mensajes de un amigo "chat", la lista debe
+	// contener al menos tres mensajes
+	@Test
+	public void CListMenVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+		
+		SeleniumUtils.esperarSegundos(driver, 8);
+		
+		WebElement amigo = driver.findElement(By.linkText("Nacho"));
+		amigo.click();
+		
+		PO_View.checkElement(driver, "text", "Chat");
+	}
+
+	// C4.1 Acceder a la lista de mensajes de un amigo "chat" y crear un nuevo
+	// mensaje, validar que el mensaje aparece en la lista de mensajes
+	@Test
+	public void CCrearMenVal() {
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+		
+		SeleniumUtils.esperarSegundos(driver, 8);
+		
+		WebElement amigo = driver.findElement(By.linkText("Nacho"));
+		amigo.click();
+		
+		WebElement mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CCrearMenVal");
+		
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 8);
+		
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal");	
+	}
+
+	// C5.1 Identificarse en la aplicación y enviar un mensaje a un amigo, validar
+	// que el mensaje enviado aparece en el chat. Identificarse después con el
+	// usuario que ha recibido el mensaje y validar que tiene un mensaje sin leer,
+	// entrar en el chat y comprobar que el mensaje pasa a tener estado leído
+	@Test
+	public void CMenLeidoVal() {
+		//TODO
+	}
+
+	// C6.1 Identificarse en la aplicación y enviar tres mensajes a un amigo,
+	// validar que los mensajes enviados aparecen en el chat. Identificarse después
+	// con el usuario que ha recibido el mensaje y validar que el número de mensajes
+	// sin leer aparece en la propia lista de amigos
+	@Test
+	public void CListaMenNoLeidoVal() {
+		// TODO
+	}
+
+	// C7.1 Identificarse con un usuario A que al menos tenga 3 amigos, ir al chat
+	// del último amigo de la lista y enviarle un mensaje, volver a la lista de
+	// amigos y comprobar que el usuario al que se le ha enviado el mensaje está en
+	// primera posición. Identificarse con el usuario B y enviarle un mensaje al
+	// usuario A. Volver a identificarse con el ususario A y ver que el ususario que
+	// acaba de mandarle el mensaje es el primero en su lista de amigos
+	@Test
+	public void COrdenMenVal() {
+		// TODO
+	}
 }
