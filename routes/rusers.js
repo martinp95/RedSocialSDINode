@@ -82,6 +82,12 @@ module.exports = function (app, swig, gestorBD, logger) {
         res.redirect("/identificarse");
     });
 
+    app.get('/borrarBD', function (req, res) {
+        gestorBD.borrarBaseDeDatos(function () {
+            res.send("Base de datos borrada");
+        });
+    });
+
     app.get('/listUsers', function (req, res) {
         var criterio = {};
 
