@@ -201,7 +201,7 @@ public class RedSocialSDITests {
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonLogin", PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
-		PO_LoginView.fillForm(driver, "gemma@example.com", "1234");
+		PO_LoginView.fillForm(driver, "nacho@gmail.com", "123456");
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigomartin@gmail.com",
 				PO_View.getTimeout());
@@ -218,11 +218,10 @@ public class RedSocialSDITests {
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
 
-		PO_View.checkElement(driver, "text", "Gemma");
+		PO_View.checkElement(driver, "text", "Nacho");
 	}
 
 	// 7.1 [AcepInvVal] Aceptar una invitación recibida.
-
 	@Test
 	public void AcepInvVal() {
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonLogin", PO_View.getTimeout());
@@ -231,6 +230,20 @@ public class RedSocialSDITests {
 		PO_LoginView.fillForm(driver, "gemma@example.com", "1234");
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigonacho@gmail.com",
+				PO_View.getTimeout());
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+
+		SeleniumUtils.esperarSegundos(driver, 3);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigomartin@gmail.com",
+				PO_View.getTimeout());
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+
+		SeleniumUtils.esperarSegundos(driver, 3);
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigoraul@gmail.com",
 				PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
@@ -251,21 +264,23 @@ public class RedSocialSDITests {
 		elementos.get(0).click();
 
 		SeleniumUtils.textoNoPresentePagina(driver, "Gemma");
-	}
 
-	// 8.1 Listar los amigos de un usuario, realizar la comprobación con una lista
-	// que al menos tenga un amigo.
-	@Test
-	public void ListAmiVal() {
-		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonLogin", PO_View.getTimeout());
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonLogout", PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
-		PO_LoginView.fillForm(driver, "gemma@example.com", "1234");
 
-		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAgregarAmigoraul@gmail.com",
+		PO_LoginView.fillForm(driver, "martin@gmail.com", "123456");
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "mListaPeticiones", PO_View.getTimeout());
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonAceptarAmigogemma@example.com",
 				PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
 		elementos.get(0).click();
+
+		SeleniumUtils.textoNoPresentePagina(driver, "Gemma");
 
 		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonLogout", PO_View.getTimeout());
 		assertTrue(elementos.size() == 1);
@@ -287,6 +302,24 @@ public class RedSocialSDITests {
 		elementos.get(0).click();
 
 		PO_View.checkElement(driver, "text", "Gemma");
+	}
+
+	// 8.1 Listar los amigos de un usuario, realizar la comprobación con una lista
+	// que al menos tenga un amigo.
+	@Test
+	public void ListAmiVal() {
+		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "botonLogin", PO_View.getTimeout());
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+		PO_LoginView.fillForm(driver, "gemma@example.com", "1234");
+
+		elementos = SeleniumUtils.EsperaCargaPagina(driver, "id", "mListaAmistades", PO_View.getTimeout());
+		assertTrue(elementos.size() == 1);
+		elementos.get(0).click();
+
+		PO_View.checkElement(driver, "text", "Raul");
+		PO_View.checkElement(driver, "text", "Nacho");
+		PO_View.checkElement(driver, "text", "Martin");
 	}
 
 	// C1.1 Inicio de sesión con datos válidos
@@ -346,8 +379,10 @@ public class RedSocialSDITests {
 		driver.findElement(boton).click();
 
 		SeleniumUtils.esperarSegundos(driver, 5);
-		
+
+		PO_View.checkElement(driver, "text", "Raul");
 		PO_View.checkElement(driver, "text", "Nacho");
+		PO_View.checkElement(driver, "text", "Martin");
 	}
 
 	// C2.2 Acceder a la lista de amigos de un usuario, y realizar un filtrado para
@@ -395,13 +430,17 @@ public class RedSocialSDITests {
 		password.sendKeys("1234");
 		By boton = By.id("boton-login");
 		driver.findElement(boton).click();
-		
+
 		SeleniumUtils.esperarSegundos(driver, 8);
-		
+
 		WebElement amigo = driver.findElement(By.linkText("Nacho"));
 		amigo.click();
-		
+
 		PO_View.checkElement(driver, "text", "Chat");
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal1");
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal2");
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal3");
+
 	}
 
 	// C4.1 Acceder a la lista de mensajes de un amigo "chat" y crear un nuevo
@@ -420,22 +459,40 @@ public class RedSocialSDITests {
 		password.sendKeys("1234");
 		By boton = By.id("boton-login");
 		driver.findElement(boton).click();
-		
+
 		SeleniumUtils.esperarSegundos(driver, 8);
-		
+
 		WebElement amigo = driver.findElement(By.linkText("Nacho"));
 		amigo.click();
-		
+
 		WebElement mensaje = driver.findElement(By.id("agregar-texto"));
 		mensaje.click();
 		mensaje.clear();
-		mensaje.sendKeys("Mensaje para test CCrearMenVal");
-		
+		mensaje.sendKeys("Mensaje para test CCrearMenVal1");
 		boton = By.id("boton-agregar");
 		driver.findElement(boton).click();
-		SeleniumUtils.esperarSegundos(driver, 8);
-		
-		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal");	
+		SeleniumUtils.esperarSegundos(driver, 5);
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal1");
+
+		mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CCrearMenVal2");
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal2");
+
+		mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CCrearMenVal3");
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+
+		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal3");
 	}
 
 	// C5.1 Identificarse en la aplicación y enviar un mensaje a un amigo, validar
@@ -444,7 +501,7 @@ public class RedSocialSDITests {
 	// entrar en el chat y comprobar que el mensaje pasa a tener estado leído
 	@Test
 	public void CMenLeidoVal() {
-		//TODO
+		// TODO
 	}
 
 	// C6.1 Identificarse en la aplicación y enviar tres mensajes a un amigo,
