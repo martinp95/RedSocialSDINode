@@ -38,7 +38,8 @@ module.exports = function(app, swig, gestorBD) {
 								'views/blistaAmigos.html', {
 									usuarios : usariosAmigos,
 									pgActual : pg,
-									pgUltima : pgUltima
+									pgUltima : pgUltima,
+									usuarioSesion: req.session.usuario
 								});
 						res.send(respuesta);
 					});

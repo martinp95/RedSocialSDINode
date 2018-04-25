@@ -44,7 +44,8 @@ module.exports = function(app, swig, gestorBD) {
 								'views/blistaPeticiones.html', {
 									usuarios : usariosPeticion,
 									pgActual : pg,
-									pgUltima : pgUltima
+									pgUltima : pgUltima,
+									usuarioSesion: req.session.usuario
 								});
 						res.send(respuesta);
 					});

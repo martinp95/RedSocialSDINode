@@ -137,7 +137,8 @@ module.exports = function (app, swig, gestorBD, logger) {
                 var respuesta = swig.renderFile('views/blistaUsers.html', {
                     usuarios: usuarios,
                     pgActual: pg,
-                    pgUltima: pgUltima
+                    pgUltima: pgUltima,
+                    usuarioSesion: req.session.usuario
                 });
                 res.send(respuesta);
             }

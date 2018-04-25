@@ -26,6 +26,8 @@
 				<img src="/img/student-48.png" alt="logo" />
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
+
+				{% if usuarioSesion != null %}
 				<ul class="nav navbar-nav">
 					<li id="mListaUsuarios" class="active"><a href="/listUsers">Lista
 							Usuarios</a></li>
@@ -38,13 +40,20 @@
 					<li id="mListaAmistades" class="active"><a
 						href="/amistad/listar">Lista Amigos</a></li>
 				</ul>
+				{% endif %}
+
 				<ul class="nav navbar-nav navbar-right">
-					<li><a id = "botonSignup" href="/registrarse" ><span
+				{% if usuarioSesion == null %}
+					<li><a id="botonSignup" href="/registrarse"><span
 							class="glyphicon glyphicon-user"></span> Registrate</a></li>
-					<li><a id = "botonLogin" href="/identificarse"><span
+					<li><a id="botonLogin" href="/identificarse"><span
 							class="glyphicon glyphicon-log-in"></span> Identifícate</a></li>
-					<li><a id = "botonLogout" href="/desconectarse"><span
-							class="glyphicon glyphicon-log-out"></span> Desconectarse</a></li>
+				{% endif %}
+				
+				{% if usuarioSesion != null %}
+					<li><a id="botonLogout" href="/desconectarse"><span
+							class="glyphicon glyphicon-log-out"></span> Desconectarse</a></li> 
+				{% endif %}
 				</ul>
 			</div>
 		</div>
