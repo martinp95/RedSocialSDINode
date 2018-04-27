@@ -55,6 +55,14 @@ module.exports = function (app, gestorBD) {
 	              error: "No se puede acceder a los mensajes"
 	             })
 			 }else{
+				//este criterio no me vale es de prueba
+					//tiene que ser los que el usuario en sesion tenga sin leer.
+				 var criterioContar = {
+						 "destino._id" : gestorBD.mongo.ObjectID(usuarios[0]._id),
+						 "emisor._id" : gestorBD.mongo.ObjectID(req.params.id),
+						 leido : false
+				 }
+				 
 				 var criterio = {
 						 $or : [{
 							 "emisor._id" : gestorBD.mongo.ObjectID(usuarios[0]._id),
@@ -64,10 +72,14 @@ module.exports = function (app, gestorBD) {
 							 "emisor._id" : gestorBD.mongo.ObjectID(req.params.id)
 						 }]
 				 };
-				 gestorBD.obtenerMensajes(criterio, function(mensajes){
+				 gestorBD.obtenerMensajes(criterio, criterioContar, function(mensajes, count){
 					 res.status(200);
 					 
-					 res.send(JSON.stringify(mensajes));
+					 //res.send(JSON.stringify(mensajes), numero : count);
+					 res.json({
+						 mensajes : mensajes,
+						 numero : count
+					 })
 				 });
 			 }
 		});

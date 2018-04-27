@@ -56,16 +56,16 @@ module.exports = {
 			}
 		});
 	},
-	crearMensaje : function(mensaje, funcionCallback){
-		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db){
-			if(err){
+	crearMensaje : function(mensaje, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
 				funcionCallback(null);
-			}else{
+			} else {
 				var collection = db.collection('mensajes');
-				collection.insert(mensaje, function(err, result){
-					if(err){
+				collection.insert(mensaje, function(err, result) {
+					if (err) {
 						funcionCallback(null);
-					}else{
+					} else {
 						funcionCallback(result.ops[0]._id);
 					}
 					db.close();
@@ -90,23 +90,26 @@ module.exports = {
 			}
 		});
 	},
-    obtenerMensajes : function(criterio,funcionCallback){
-        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db){
-            if(err){
-                funcionCallback(null);
-            }else{
-                var collection = db.collection('mensajes');
-                collection.find(criterio).toArray(function(err,mensajes){
-                    if(err){
-                        funcionCallback(null);
-                    }else{
-                        funcionCallback(mensajes);
-                    }
-                    db.close();
-                });
-            }
-        });
-    },
+	obtenerMensajes : function(criterio, criterioContar, funcionCallback) {
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('mensajes');
+				collection.count(criterioContar, function(err, count) {
+					collection.find(criterio).toArray(function(err, mensajes) {
+						if (err) {
+							funcionCallback(null);
+						} else {
+							funcionCallback(mensajes, count);
+						}
+						db.close();
+					});
+				});
+			}
+
+		});
+	},
 	obtenerPeticionesAmistad : function(peticion, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
@@ -147,22 +150,24 @@ module.exports = {
 		});
 	},
 	modificarMensaje : function(criterio, mensaje, funcionCallback) {
-        this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
-            if (err) {
-                funcionCallback(null);
-            } else {
-                var collection = db.collection('mensajes');
-                collection.update(criterio, {$set: mensaje}, function(err, result) {
-                    if (err) {
-                        funcionCallback(null);
-                    } else {
-                        funcionCallback(result);
-                    }
-                    db.close();
-                });
-            }
-        });
-    },
+		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('mensajes');
+				collection.update(criterio, {
+					$set : mensaje
+				}, function(err, result) {
+					if (err) {
+						funcionCallback(null);
+					} else {
+						funcionCallback(result);
+					}
+					db.close();
+				});
+			}
+		});
+	},
 	obtenerUsuarios : function(criterio, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
 			if (err) {
@@ -182,46 +187,66 @@ module.exports = {
 	},
 	insertarUsuario : function(usuario, funcionCallback) {
 		this.mongo.MongoClient.connect(this.app.get('db'), function(err, db) {
-            if (err) {
-                funcionCallback(null);
-            } else {
-                var collection = db.collection('usuarios');
-                collection.insert(usuario, function (err, result) {
-                    if (err) {
-                        funcionCallback(null);
-                    } else {
-                        funcionCallback(result.ops[0]._id);
-                    }
-                    db.close();
-                });
-            }
-        });
-    }, borrarBaseDeDatos: function (funcionCallback) {
-        this.mongo.MongoClient.connect(this.app.get('db'), function (err, db) {
-            if (err) {
-                funcionCallback(null);
-            } else {
-                db.collection('peticionesAmistad').drop(function (err, result) {
-                    if (err) {
-                        funcionCallback(null);
-                    } else {
-                        db.collection('amistad').drop(function (err, result) {
-                            if (err) {
-                                funcionCallback(null);
-                            } else {
-                                db.collection('mensajes').drop(function (err, result) {
-                                    if (err) {
-                                        funcionCallback(null);
-                                    } else {
-                                        funcionCallback(result);
-                                    }
-                                    db.close();
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    }
+			if (err) {
+				funcionCallback(null);
+			} else {
+				var collection = db.collection('usuarios');
+				collection.insert(usuario, function(err, result) {
+					if (err) {
+						funcionCallback(null);
+					} else {
+						funcionCallback(result.ops[0]._id);
+					}
+					db.close();
+				});
+			}
+		});
+	},
+	borrarBaseDeDatos : function(funcionCallback) {
+		this.mongo.MongoClient
+				.connect(
+						this.app.get('db'),
+						function(err, db) {
+							if (err) {
+								funcionCallback(null);
+							} else {
+								db
+										.collection('peticionesAmistad')
+										.drop(
+												function(err, result) {
+													if (err) {
+														funcionCallback(null);
+													} else {
+														db
+																.collection(
+																		'amistad')
+																.drop(
+																		function(
+																				err,
+																				result) {
+																			if (err) {
+																				funcionCallback(null);
+																			} else {
+																				db
+																						.collection(
+																								'mensajes')
+																						.drop(
+																								function(
+																										err,
+																										result) {
+																									if (err) {
+																										funcionCallback(null);
+																									} else {
+																										funcionCallback(result);
+																									}
+																									db
+																											.close();
+																								});
+																			}
+																		});
+													}
+												});
+							}
+						});
+	}
 };

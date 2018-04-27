@@ -40,7 +40,7 @@
             dataType: 'json',
             headers: {"token": token},
             success: function (respuesta) {
-                mensajes = respuesta;
+                mensajes = respuesta.mensajes;
                 actualizarTabla(mensajes);
             },
             error: function (error) {
