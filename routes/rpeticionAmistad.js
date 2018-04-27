@@ -92,7 +92,7 @@ module.exports = function(app, swig, gestorBD) {
 									} else {
 										res.redirect("/listUsers"
 												+ "?mensaje=Se ha enviado la petición de amistad"
-												+ "&tipoMensaje=confirm ");
+												+ "&tipoMensaje=alert-success ");
 									}
 								});
 							}

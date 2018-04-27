@@ -20,6 +20,8 @@
 <script>
     window.history.pushState("", "", "/cliente.html?w=amigos");
 
+    $("#barra-menu").append("<li><a onclick=widgetAmigos()>Amigos</a></li>");
+
     var usuarios;
 
     function cargarAmigos() {

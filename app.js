@@ -50,7 +50,7 @@ routerUsuarioToken.use(function (req, res, next) {
     if (token != null) {
         // verificar el token
         jwt.verify(token, 'secreto', function (err, infoToken) {
-            if (err || (Date.now() / 1000 - infoToken.tiempo) > 240) {
+            if (err || (Date.now() / 1000 - infoToken.tiempo) > 24000) {
                 res.status(403); // Forbidden
                 res.json({
                     acceso: false,
@@ -121,7 +121,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.get('/', function (req, res) {
-    var respuesta = swig.renderFile('views/bindex.html', {});
+    var respuesta = swig.renderFile('views/bindex.html', { });
     res.send(respuesta);
 });
 
