@@ -203,50 +203,29 @@ module.exports = {
 		});
 	},
 	borrarBaseDeDatos : function(funcionCallback) {
-		this.mongo.MongoClient
-				.connect(
-						this.app.get('db'),
-						function(err, db) {
-							if (err) {
-								funcionCallback(null);
-							} else {
-								db
-										.collection('peticionesAmistad')
-										.drop(
-												function(err, result) {
-													if (err) {
-														funcionCallback(null);
-													} else {
-														db
-																.collection(
-																		'amistad')
-																.drop(
-																		function(
-																				err,
-																				result) {
-																			if (err) {
-																				funcionCallback(null);
-																			} else {
-																				db
-																						.collection(
-																								'mensajes')
-																						.drop(
-																								function(
-																										err,
-																										result) {
-																									if (err) {
-																										funcionCallback(null);
-																									} else {
-																										funcionCallback(result);
-																									}
-																									db
-																											.close();
-																								});
-																			}
-																		});
-													}
-												});
+		this.mongo.MongoClient.connect(this.app.get('db'),function(err, db) {
+			if (err) {
+				funcionCallback(null);
+				} else {
+					db.collection('peticionesAmistad').drop(function(err, result) {
+						if (err) {funcionCallback(null);
+						} else {
+							db.collection('amistad').drop(function(err,result) {
+								if (err) {
+									funcionCallback(null);
+									} else {
+										db.collection('mensajes').drop(function(err,result) {
+											if (err) {
+												funcionCallback(null);
+												} else {
+													funcionCallback(result);
+													}db.close();
+													});
+										}
+								});
 							}
 						});
+					}
+			});
 	}
 };
