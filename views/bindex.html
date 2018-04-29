@@ -3,6 +3,7 @@
 {% block titulo %} Identificar usuario {% endblock %} 
 
 {% block contenido_principal %}
+{% if usuarioSesion == null %}
   <h2>Identificación de usuario</h2>
   <form class="form-horizontal" method="post" action="/identificarse" >
     <div class="form-group">
@@ -29,4 +30,5 @@
   <div>
   	<a href="/registrarse"> Registrarse</a>
   </div>
+  {%endif%}
 {% endblock %}

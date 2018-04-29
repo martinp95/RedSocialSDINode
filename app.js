@@ -121,7 +121,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.get('/', function (req, res) {
-    var respuesta = swig.renderFile('views/bindex.html', { });
+    var respuesta = swig.renderFile('views/bindex.html', {usuarioSesion: req.session.usuario });
     res.send(respuesta);
 });
 
