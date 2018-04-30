@@ -127,7 +127,8 @@ module.exports = function (app, gestorBD) {
                                     emisor: usuarios[0],
                                     destino: usuarioAmigo[0],
                                     texto: req.body.texto,
-                                    leido: false
+                                    leido: false,
+                                    fecha : Date.now()
                                 };
                                 gestorBD.crearMensaje(mensaje, function (id) {
                                     if (id == null) {
