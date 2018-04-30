@@ -41,13 +41,34 @@
         });
     }
 
+    var mensajes;
+
+    function cargarMensajes(idAmigoSeleccionado) {
+        $.ajax({
+            url: URLbase + "/mensajes/" + idAmigoSeleccionado,
+            type: "GET",
+            data: {},
+            dataType: 'json',
+            headers: {"token": token},
+            success: function (respuesta) {
+                mensajes = respuesta.numero;
+                //actualizarTabla(mensajes);
+            },
+            error: function (error) {
+                $("#contenedor-principal").load("widget-login.html");
+            }
+        });
+    }
+
     function actualizarTabla(amigosMostrar) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < amigosMostrar.length; i++) {
+            cargarMensajes(amigosMostrar[i]._id);
             $("#tablaCuerpo").append(
                 "<tr id=" + amigosMostrar[i]._id + ">" +
                 "<td>" +  "<a onclick=chat('" + amigosMostrar[i]._id + "')>" + amigosMostrar[i].name +"</a>" + "</td>" +
                 "<td>" + amigosMostrar[i].email + "</td>" +
+                "<td>" + mensajes[i] + "</td>" +
                 "<td>" +
                 "</td>" +
                 "</tr>");
