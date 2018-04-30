@@ -52,6 +52,7 @@
             headers: {"token": token},
             success: function (respuesta) {
                 mensajes = respuesta.numero;
+                console.log("Num mensajes" + mensajes);
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
@@ -59,7 +60,7 @@
         });
     }
 
-    function actualizarTabla(amigosMostrar, mensajes) {
+    function actualizarTabla(amigosMostrar) {
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < amigosMostrar.length; i++) {
             cargarMensajes(amigosMostrar[i]._id);
@@ -67,7 +68,7 @@
                 "<tr id=" + amigosMostrar[i]._id + ">" +
                 "<td>" +  "<a onclick=chat('" + amigosMostrar[i]._id + "')>" + amigosMostrar[i].name +"</a>" + "</td>" +
                 "<td>" + amigosMostrar[i].email + "</td>" +
-                "<td>" + mensajes + "</td>" +
+                "<td>" + mensajes + " mensajes sin leer" + "</td>" +
                 "<td>" +
                 "</td>" +
                 "</tr>");
