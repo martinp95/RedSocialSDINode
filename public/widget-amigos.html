@@ -52,7 +52,6 @@
             headers: {"token": token},
             success: function (respuesta) {
                 mensajes = respuesta.numero;
-                console.log("Num mensajes" + mensajes);
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
@@ -101,5 +100,7 @@
         actualizarTabla(amigosFiltrados);
     });
 
-    cargarAmigos();
+    setInterval(function () {
+        cargarAmigos();
+    }, 1000);
 </script>
