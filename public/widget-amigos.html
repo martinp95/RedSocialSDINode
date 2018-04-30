@@ -41,7 +41,7 @@
         });
     }
 
-    var mensajes;
+    var numero;
 
     function cargarMensajes(idAmigoSeleccionado) {
         $.ajax({
@@ -51,7 +51,8 @@
             dataType: 'json',
             headers: {"token": token},
             success: function (respuesta) {
-                mensajes = respuesta.numero;
+                numero = respuesta.numero;
+                mensajes = respuesta.mensajes;
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
@@ -63,14 +64,14 @@
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < amigosMostrar.length; i++) {
             cargarMensajes(amigosMostrar[i]._id);
-            if(typeof (mensajes)=="undefined"){
-                mensajes = 0;
+            if(typeof (numero)=="undefined"){
+                numero = 0;
             }
             $("#tablaCuerpo").append(
                 "<tr id=" + amigosMostrar[i]._id + ">" +
                 "<td>" +  "<a onclick=chat('" + amigosMostrar[i]._id + "')>" + amigosMostrar[i].name +"</a>" + "</td>" +
                 "<td>" + amigosMostrar[i].email + "</td>" +
-                "<td>" + mensajes + " mensajes sin leer" + "</td>" +
+                "<td>" + numero + " mensajes sin leer" + "</td>" +
                 "<td>" +
                 "</td>" +
                 "</tr>"
