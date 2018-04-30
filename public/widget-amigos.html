@@ -63,6 +63,9 @@
         $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < amigosMostrar.length; i++) {
             cargarMensajes(amigosMostrar[i]._id);
+            if(typeof (mensajes)=="undefined"){
+                mensajes = 0;
+            }
             $("#tablaCuerpo").append(
                 "<tr id=" + amigosMostrar[i]._id + ">" +
                 "<td>" +  "<a onclick=chat('" + amigosMostrar[i]._id + "')>" + amigosMostrar[i].name +"</a>" + "</td>" +
@@ -70,7 +73,8 @@
                 "<td>" + mensajes + " mensajes sin leer" + "</td>" +
                 "<td>" +
                 "</td>" +
-                "</tr>");
+                "</tr>"
+            );
         }
     }
 
@@ -102,5 +106,5 @@
 
     setInterval(function () {
         cargarAmigos();
-    }, 1000);
+    }, 2000);
 </script>
