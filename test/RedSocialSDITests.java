@@ -436,6 +436,8 @@ public class RedSocialSDITests {
 		WebElement amigo = driver.findElement(By.linkText("Nacho"));
 		amigo.click();
 
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
 		PO_View.checkElement(driver, "text", "Chat");
 		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal1");
 		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal2");
@@ -465,6 +467,8 @@ public class RedSocialSDITests {
 		WebElement amigo = driver.findElement(By.linkText("Nacho"));
 		amigo.click();
 
+		SeleniumUtils.esperarSegundos(driver, 4);
+
 		WebElement mensaje = driver.findElement(By.id("agregar-texto"));
 		mensaje.click();
 		mensaje.clear();
@@ -484,13 +488,15 @@ public class RedSocialSDITests {
 
 		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal2");
 
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
 		mensaje = driver.findElement(By.id("agregar-texto"));
 		mensaje.click();
 		mensaje.clear();
 		mensaje.sendKeys("Mensaje para test CCrearMenVal3");
 		boton = By.id("boton-agregar");
 		driver.findElement(boton).click();
-		SeleniumUtils.esperarSegundos(driver, 5);
+		SeleniumUtils.esperarSegundos(driver, 8);
 
 		PO_View.checkElement(driver, "text", "Mensaje para test CCrearMenVal3");
 	}
@@ -501,7 +507,59 @@ public class RedSocialSDITests {
 	// entrar en el chat y comprobar que el mensaje pasa a tener estado leído
 	@Test
 	public void CMenLeidoVal() {
-		// TODO
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		SeleniumUtils.esperarSegundos(driver, 8);
+
+		WebElement amigo = driver.findElement(By.linkText("Raul"));
+		amigo.click();
+
+		SeleniumUtils.esperarSegundos(driver, 4);
+		
+		WebElement mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CMenLeidoVal");
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		PO_View.checkElement(driver, "text", "Mensaje para test CMenLeidoVal");
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
+		driver.navigate().to("http://localhost:8081/cliente.html?w=login");
+		
+		email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("raul@gmail.com");
+		password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("123456");
+		boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		SeleniumUtils.esperarSegundos(driver, 8);
+		
+		PO_View.checkElement(driver, "text", "1 mensajes sin leer");
+		
+		amigo = driver.findElement(By.linkText("Gemma"));
+		amigo.click();
+
+		SeleniumUtils.esperarSegundos(driver, 4);
+		
+		PO_View.checkElement(driver, "text", "true");
 	}
 
 	// C6.1 Identificarse en la aplicación y enviar tres mensajes a un amigo,
@@ -510,7 +568,72 @@ public class RedSocialSDITests {
 	// sin leer aparece en la propia lista de amigos
 	@Test
 	public void CListaMenNoLeidoVal() {
-		// TODO
+		driver.navigate().to("http://localhost:8081/cliente.html");
+
+		WebElement email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("gemma@example.com");
+		WebElement password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("1234");
+		By boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		SeleniumUtils.esperarSegundos(driver, 8);
+
+		WebElement amigo = driver.findElement(By.linkText("Martin"));
+		amigo.click();
+
+		SeleniumUtils.esperarSegundos(driver, 4);
+		
+		WebElement mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CListaMenNoLeidoVal1");
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		PO_View.checkElement(driver, "text", "Mensaje para test CListaMenNoLeidoVal1");
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
+		mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CListaMenNoLeidoVal2");
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		PO_View.checkElement(driver, "text", "Mensaje para test CListaMenNoLeidoVal2");
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
+		mensaje = driver.findElement(By.id("agregar-texto"));
+		mensaje.click();
+		mensaje.clear();
+		mensaje.sendKeys("Mensaje para test CListaMenNoLeidoVal3");
+		boton = By.id("boton-agregar");
+		driver.findElement(boton).click();
+		SeleniumUtils.esperarSegundos(driver, 5);
+		PO_View.checkElement(driver, "text", "Mensaje para test CListaMenNoLeidoVal3");
+		SeleniumUtils.esperarSegundos(driver, 3);
+		
+		driver.navigate().to("http://localhost:8081/cliente.html?w=login");
+		
+		email = driver.findElement(By.name("email"));
+		email.click();
+		email.clear();
+		email.sendKeys("martin@gmail.com");
+		password = driver.findElement(By.name("password"));
+		password.click();
+		password.clear();
+		password.sendKeys("123456");
+		boton = By.id("boton-login");
+		driver.findElement(boton).click();
+
+		SeleniumUtils.esperarSegundos(driver, 5);
+		
+		PO_View.checkElement(driver, "text", "3 mensajes sin leer");
 	}
 
 	// C7.1 Identificarse con un usuario A que al menos tenga 3 amigos, ir al chat
