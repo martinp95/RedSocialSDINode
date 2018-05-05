@@ -11,7 +11,7 @@
             <th class="col-md-1"></th>
         </tr>
         </thead>
-        <tbody id="tablaCuerpo">
+        <tbody id="tablaCuerpo2">
 
         </tbody>
     </table>
@@ -41,7 +41,7 @@
             headers: {"token": token},
             success: function (respuesta) {
                 mensajes = respuesta.mensajes;
-                actualizarTabla(mensajes);
+                actualizarTablaChat(mensajes);
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
@@ -65,12 +65,12 @@
         });
     }
 
-    function actualizarTabla(mensajesMostrar) {
-        $("#tablaCuerpo").empty(); // Vaciar la tabla
+    function actualizarTablaChat(mensajesMostrar) {
+        $("#tablaCuerpo2").empty(); // Vaciar la tabla
         for (i = 0; i < mensajesMostrar.length; i++) {
             marcarLeido(mensajesMostrar[i]._id.toString());
-            $("#tablaCuerpo").append(
-                "<tr id=" + mensajesMostrar[i]._id + ">" +
+            $("#tablaCuerpo2").append(
+                "<tr id=" + 'chat' + mensajesMostrar[i]._id + ">" +
                 "<td>" + mensajesMostrar[i].emisor.name + "</a>" + "</td>" +
                 "<td>" + mensajesMostrar[i].destino.name + "</td>" +
                 "<td>" + mensajesMostrar[i].texto + "</td>" +

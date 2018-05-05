@@ -97,7 +97,7 @@ module.exports = {
 			} else {
 				var collection = db.collection('mensajes');
 				collection.count(criterioContar, function(err, count) {
-					collection.find(criterio).sort({fecha : -1}).toArray(function(err, mensajes) {
+					collection.find(criterio).sort({fecha : 1}).toArray(function(err, mensajes) {
 						if (err) {
 							funcionCallback(null);
 						} else {

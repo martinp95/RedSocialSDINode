@@ -5,14 +5,13 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>><a onclick="ordenarPorMensaje()">Nombre</a></th>
+            <th>Nombre</th>
             <th>Email</th>
             <th>Mensajes sin leer</th>
             <th class="col-md-1"></th>
         </tr>
         </thead>
         <tbody id="tablaCuerpo">
-
         </tbody>
     </table>
 </div>
@@ -23,6 +22,8 @@
     $("#barra-menu").append("<li><a onclick=widgetAmigos()>Amigos</a></li>");
 
     var usuarios;
+    var numero = 0;
+    var mensajes;
 
     function cargarAmigos() {
         $.ajax({
@@ -33,6 +34,8 @@
             headers: {"token": token},
             success: function (respuesta) {
                 usuarios = respuesta;
+                usuarios["mensajesSinLeer"] = 0;
+                usuarios["ultimoMensaje"] = {};
                 actualizarTabla(usuarios);
             },
             error: function (error) {
@@ -41,9 +44,7 @@
         });
     }
 
-    var numero;
-
-    function cargarMensajes(idAmigoSeleccionado) {
+    function cargarMensajes(amigosMostrar, idAmigoSeleccionado) {
         $.ajax({
             url: URLbase + "/mensajes/" + idAmigoSeleccionado,
             type: "GET",
@@ -53,6 +54,21 @@
             success: function (respuesta) {
                 numero = respuesta.numero;
                 mensajes = respuesta.mensajes;
+                amigosMostrar.mensajesSinLeer = numero;
+                amigosMostrar.ultimoMensaje = mensajes[mensajes.length - 1];
+                console.log(amigosMostrar.ultimoMensaje.texto);
+                $("#" + amigosMostrar._id).remove();
+                $("#tablaCuerpo").append(
+                    "<tr id=" + amigosMostrar._id + ">" +
+                    "<td>" + "<a onclick=chat('" + amigosMostrar._id + "')>" + amigosMostrar.name + "</a>" + "</td>" +
+                    "<td>" + amigosMostrar.email + "</td>" +
+                    "<td>" + amigosMostrar.mensajesSinLeer + " mensajes sin leer" + "</td>" +
+                    "</td>" +
+                    "</tr>"
+                );
+                /*usuarios.sort(function (a, b) {
+                    return b.ultimoMensaje.fecha - a.ultimoMensaje.fecha;
+                });*/
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");
@@ -61,21 +77,8 @@
     }
 
     function actualizarTabla(amigosMostrar) {
-        $("#tablaCuerpo").empty(); // Vaciar la tabla
         for (i = 0; i < amigosMostrar.length; i++) {
-            cargarMensajes(amigosMostrar[i]._id);
-            if(typeof (numero)=="undefined"){
-                numero = 0;
-            }
-            $("#tablaCuerpo").append(
-                "<tr id=" + amigosMostrar[i]._id + ">" +
-                "<td>" +  "<a onclick=chat('" + amigosMostrar[i]._id + "')>" + amigosMostrar[i].name +"</a>" + "</td>" +
-                "<td>" + amigosMostrar[i].email + "</td>" +
-                "<td>" + numero + " mensajes sin leer" + "</td>" +
-                "<td>" +
-                "</td>" +
-                "</tr>"
-            );
+            cargarMensajes(amigosMostrar[i], amigosMostrar[i]._id);
         }
     }
 
@@ -83,17 +86,6 @@
         idAmigoSeleccionado = _idAmigo;
         $("#contenedor-principal").load("widget-chat.html");
     }
-
-    /*var ultimoMensaje;
-
-    function ordenarPorMensaje(){
-        usuarios.sort(function (a, b) {
-            if(mensajes.fecha > mensajes.fecha) return -1;
-            if(mensajes.fecha < b.mensaje.fecha) return 1;
-            return 0;
-        })
-        actualizarTabla(usuarios);
-    }*/
 
     $('#filtro-nombre').on('input',function(e){
         var amigosFiltrados = [];
