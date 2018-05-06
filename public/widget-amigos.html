@@ -22,8 +22,7 @@
     $("#barra-menu").append("<li><a onclick=widgetAmigos()>Amigos</a></li>");
 
     var usuarios;
-    var numero = 0;
-    var mensajes;
+    var numero;
 
     function cargarAmigos() {
         $.ajax({
@@ -35,7 +34,6 @@
             success: function (respuesta) {
                 usuarios = respuesta;
                 usuarios["mensajesSinLeer"] = 0;
-                usuarios["ultimoMensaje"] = {};
                 actualizarTabla(usuarios);
             },
             error: function (error) {
@@ -53,10 +51,7 @@
             headers: {"token": token},
             success: function (respuesta) {
                 numero = respuesta.numero;
-                mensajes = respuesta.mensajes;
                 amigosMostrar.mensajesSinLeer = numero;
-                amigosMostrar.ultimoMensaje = mensajes[mensajes.length - 1];
-                console.log(amigosMostrar.ultimoMensaje.texto);
                 $("#" + amigosMostrar._id).remove();
                 $("#tablaCuerpo").append(
                     "<tr id=" + amigosMostrar._id + ">" +
@@ -66,9 +61,6 @@
                     "</td>" +
                     "</tr>"
                 );
-                /*usuarios.sort(function (a, b) {
-                    return b.ultimoMensaje.fecha - a.ultimoMensaje.fecha;
-                });*/
             },
             error: function (error) {
                 $("#contenedor-principal").load("widget-login.html");

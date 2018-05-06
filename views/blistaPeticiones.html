@@ -16,7 +16,7 @@ endblock %} {% block contenido_principal %}
 				<td>{{ usuario.name }}</td>
 				<td>{{ usuario.email }}</td>
 				<td><a id="botonAceptarAmigo{{ usuario.email }}" class="btn btn-primary pull-right"
-					href="/aceptarPeticion/{{usuario._id.toString()}}">Aceptar</a> <br></td>
+					href="/peticionAmistad/aceptar/{{usuario._id.toString()}}">Aceptar</a> <br></td>
 			</tr>
 			{% endfor %}
 		</tbody>

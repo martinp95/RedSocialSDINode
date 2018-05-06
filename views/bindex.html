@@ -5,7 +5,7 @@
 {% block contenido_principal %}
 {% if usuarioSesion == null %}
   <h2>Identificación de usuario</h2>
-  <form class="form-horizontal" method="post" action="/identificarse" >
+  <form class="form-horizontal" method="post" action="/user/identificarse" >
     <div class="form-group">
       <label class="control-label col-sm-2" for="email">Email:</label>
       <div class="col-sm-10">
@@ -28,7 +28,7 @@
   </form>
   
   <div>
-  	<a href="/registrarse"> Registrarse</a>
+  	<a href="/user/registrarse"> Registrarse</a>
   </div>
   {%endif%}
 {% endblock %}

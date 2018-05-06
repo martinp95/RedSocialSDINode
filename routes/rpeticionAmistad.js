@@ -71,7 +71,7 @@ module.exports = function(app, swig, gestorBD) {
 				gestorBD.obtenerPeticionesAmistad(peticionAmistad, function(
 						peticionesAmistad) {
 					if( peticionesAmistad.length != 0){
-						res.redirect("/listUsers"
+						res.redirect("/user/list"
 								+ "?mensaje=Error, peticion ya enviada."
 								+ "&tipoMensaje=alert-danger ");
 					}else{
@@ -82,7 +82,7 @@ module.exports = function(app, swig, gestorBD) {
 							};
 						gestorBD.obtenerAmistad(relacionAmistad, function(amistad){
 							if(amistad.length != 0){
-								res.redirect("/listUsers"
+								res.redirect("/user/list"
 										+ "?mensaje=Error, los usuarios ya son amigos."
 										+ "&tipoMensaje=alert-danger ");
 							}else{
@@ -90,7 +90,7 @@ module.exports = function(app, swig, gestorBD) {
 									if (id == null) {
 										res.send("Error al insertar la peticion");
 									} else {
-										res.redirect("/listUsers"
+										res.redirect("/user/list"
 												+ "?mensaje=Se ha enviado la petición de amistad"
 												+ "&tipoMensaje=alert-success ");
 									}

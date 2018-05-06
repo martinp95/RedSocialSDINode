@@ -92,7 +92,7 @@ routerUsuarioSession.use(function (req, res, next) {
 });
 
 // Aplicar router UserSession
-app.use("/listUsers", routerUsuarioSession);
+app.use("/user/list", routerUsuarioSession);
 app.use("/peticionAmistad/listar", routerUsuarioSession);
 app.use("/amistad/listar", routerUsuarioSession);
 

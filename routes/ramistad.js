@@ -48,7 +48,7 @@ module.exports = function(app, swig, gestorBD) {
 		});
 	});
 
-	app.get('/aceptarPeticion/:idSender', function(req, res) {
+	app.get('/peticionAmistad/aceptar/:idSender', function(req, res) {
 		var criterio = {
 			email : req.session.usuario
 		};

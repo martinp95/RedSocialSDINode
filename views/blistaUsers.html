@@ -5,7 +5,7 @@
 <!-- Busqueda -->
 <div class="row">
 	<div id="custom-search-input ">
-		<form method="get" action="/listUsers">
+		<form method="get" action="/user/list">
 			<div
 				class="input-group col-xs-8 col-sm-6 col-md-4 col-lg-5 pull-right">
 				<input id="searchUsers" type="text"
@@ -48,24 +48,24 @@
 <div class="row text-center">
 	<ul class="pagination">
 		<!-- Primera -->
-		<li class="page-item"><a class="page-link" href="/listUsers?pg=1">Primera</a>
+		<li class="page-item"><a class="page-link" href="/user/list?pg=1">Primera</a>
 		</li>
 		<!-- Anterior (si la hay ) -->
 		{% if pgActual-1 >= 1 %}
 		<li class="page-item"><a class="page-link"
-			href="/listUsers?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {% endif
+			href="/user/list?pg={{ pgActual -1 }}">{{ pgActual -1 }}</a></li> {% endif
 		%}
 		<!-- Actual -->
 		<li class="page-item active"><a class="page-link"
-			href="/listUsers?pg={{ pgActual }}">{{ pgActual }}</a></li>
+			href="/user/list?pg={{ pgActual }}">{{ pgActual }}</a></li>
 		<!-- Siguiente (si la hay) -->
 		{% if pgActual+1 <= pgUltima %}
 		<li class="page-item"><a class="page-link"
-			href="/listUsers?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {% endif
+			href="/user/list?pg={{ pgActual+1 }}">{{ pgActual+1 }}</a></li> {% endif
 		%}
 		<!-- Última -->
 		<li class="page-item"><a class="page-link"
-			href="/listUsers?pg={{ pgUltima }}">Última</a></li>
+			href="/user/list?pg={{ pgUltima }}">Última</a></li>
 	</ul>
 </div>
 
