@@ -1,6 +1,8 @@
 module.exports = function (app, gestorBD) {
 	app.get('/api/amigos', function (req, res) {
     	var token = req.body.token || req.query.token || req.headers['token'];
+    	
+    	var filtro = req.query.name;
 
         var criterio = {
             email: app.get('jwt').decode(token, 'secreto').usuario
@@ -12,9 +14,21 @@ module.exports = function (app, gestorBD) {
                     error: "Error al listar las peticiones de amistad"
                 })
             } else {
-                var criterioAmistad = {
-                    user1: gestorBD.mongo.ObjectID(usuarios[0]._id)
-                };
+            	var criterioAmistad = {};
+            	if(filtro == null){
+	                criterioAmistad = {
+	                    user1: gestorBD.mongo.ObjectID(usuarios[0]._id)
+	                };
+            	}else{
+            		criterioAmistad = {
+            			$and :  [{
+    	                    user1: gestorBD.mongo.ObjectID(usuarios[0]._id)
+            			},{
+            				//user2 : sacar los ids del que corresponda con ese nombre filtrado.	
+            			    name: filtro
+            			}]
+    	                };
+            	}
                 gestorBD.obtenerAmistad(criterioAmistad, function (amistad) {
                     var user2 = {};
                     var idUser2 = [];
