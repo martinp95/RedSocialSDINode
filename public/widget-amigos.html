@@ -1,6 +1,6 @@
 <div id="widget-amigos">
     <input type="text" class="form-control" placeholder="Filtrar por nombre" id="filtro-nombre"/>
-    <button class="btn" onclick="cargarAmigos()">Actualizar</button>
+    <button class="btn" onclick="cargarAmigos(nombreFiltro)">Actualizar</button>
     <h2>Lista Amigos</h2>
     <table class="table table-hover">
         <thead>
@@ -24,9 +24,9 @@
     var usuarios;
     var numero;
 
-    function cargarAmigos() {
+    function cargarAmigos(nombreFiltro) {
         $.ajax({
-            url: URLbase + "/amigos",
+            url: URLbase + "/amigos?name=" + nombreFiltro,
             type: "GET",
             data: {},
             dataType: 'json',
@@ -52,6 +52,7 @@
             success: function (respuesta) {
                 numero = respuesta.numero;
                 amigosMostrar.mensajesSinLeer = numero;
+
                 $("#" + amigosMostrar._id).remove();
                 $("#tablaCuerpo").append(
                     "<tr id=" + amigosMostrar._id + ">" +
@@ -79,10 +80,12 @@
         $("#contenedor-principal").load("widget-chat.html");
     }
 
+    var nombreFiltro = "";
+
     $('#filtro-nombre').on('input',function(e){
         var amigosFiltrados = [];
-        var nombreFiltro = $("#filtro-nombre").val();
-
+        nombreFiltro = $("#filtro-nombre").val();
+        $("#tablaCuerpo").empty();
         for (i = 0; i < usuarios.length; i++) {
             if (usuarios[i].name.indexOf(nombreFiltro) != -1 ){
                 amigosFiltrados.push(usuarios[i]);
@@ -92,6 +95,7 @@
     });
 
     setInterval(function () {
-        cargarAmigos();
-    }, 2000);
+        console.log(nombreFiltro);
+        cargarAmigos(nombreFiltro);
+    }, 5000);
 </script>

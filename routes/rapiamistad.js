@@ -24,9 +24,9 @@ module.exports = function (app, gestorBD) {
             			$and :  [{
     	                    user1: gestorBD.mongo.ObjectID(usuarios[0]._id)
             			},{
-            				//user2 : sacar los ids del que corresponda con ese nombre filtrado.
-            				name : filtro
-            				}]
+            				//user2 : sacar los ids del que corresponda con ese nombre filtrado.	
+            			    name: filtro
+            			}]
     	                };
             	}
                 gestorBD.obtenerAmistad(criterioAmistad, function (amistad) {
