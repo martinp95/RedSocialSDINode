@@ -138,7 +138,8 @@ module.exports = function (app, swig, gestorBD, logger) {
                     usuarios: usuarios,
                     pgActual: pg,
                     pgUltima: pgUltima,
-                    usuarioSesion: req.session.usuario
+                    usuarioSesion: req.session.usuario,
+                    busqueda: req.query.busqueda
                 });
                 res.send(respuesta);
             }
